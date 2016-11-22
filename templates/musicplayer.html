@@ -1,0 +1,14 @@
+<div class="fixed">
+	<toolbar></toolbar>
+</div>
+<div id="playlist" class="section">
+	<div class="playlists-list" ng-context-menu="openPlaylistMenu">
+		<playlists></playlists>
+	</div>
+	<div class="music-list">
+		<songs></songs>
+	</div>
+</div>
+<div class="fixed input">
+	<div id="input-section"><input id="fileInput" type="file" multiple ng-file-change="addSongs"/></div>
+</div>

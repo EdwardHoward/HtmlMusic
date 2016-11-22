@@ -1,0 +1,182 @@
+*, *:after, *:before{
+	box-sizing: inherit;
+}
+
+body, html{
+	box-sizing: border-box;
+	margin: 0px;
+	font-family: 'Noto Sans', sans-serif;
+	height: 100%;
+	width: 100%;
+	font-size: 90%;
+}
+
+#toolbar{
+	height: 50px;
+	line-height: 50px;
+	/*border: 1px solid #e0e0e0;*/
+	background: #f9f9f9;
+	padding: 0px 3px;
+	user-select: none;
+}
+.button{
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	text-align: center;
+	line-height: 31px;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	cursor: pointer;
+	background: white;
+}
+
+.time{
+	display: inline;
+	float: right;
+}
+
+.toolbar-section{
+	padding: 0px 5px;
+}
+.middle {
+	overflow: hidden;
+}
+
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
+
+.center{
+	text-align: center;
+}
+
+#playlist{
+	width: 100%;
+    border-top: 1px solid #e0e0e0;
+	display: flex;
+}
+
+.bottom{
+	position: absolute;
+	bottom: 0px;
+}
+.fixed{
+	position: fixed;
+	width: 100%;
+	z-index: 100;
+	background: white;
+}
+
+.fixed.input{
+	bottom: 0;
+	height: 38px;
+	line-height: 38px;
+	border-top: 1px solid #e0e0e0;
+	background: #f9f9f9;
+	padding: 10px;
+}
+#timebar {
+    width: 100%;
+	vertical-align: middle;
+}
+
+#input-section{
+	position: fixed;
+	bottom: 0px;
+}
+
+#playlist-table{
+	width: 100%;
+	border-spacing: 0;
+	font-size: 90%;
+}
+
+#playlist-table th{
+	text-align: left;
+}
+#playlist-table th.center{
+	text-align: center;
+}
+
+#playlist-table tr.selected{
+	background: #deeeff;
+}
+
+td.current{
+	width: 10px;
+}
+#playlist-table tr.playing td.current:before{
+	visibility: visible;
+}
+
+#playlist-table tr td.current:before{
+	visibility: hidden;
+	content: '\f054';
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+}
+
+#playlist-table tr td, #playlist-table tr th{
+	padding: 5px 10px;
+	border-bottom: 1px solid #cacaca;
+	cursor: pointer;
+	user-select: none;
+}
+
+#playlist-table tr .time-cell{
+	width: 100px;
+}
+
+#volume{
+	vertical-align: middle;
+	width: 50px;
+}
+
+#pause.playing .fa-play{
+	display: none;
+}
+
+#pause:not(.playing) .fa-pause{
+	display: none;
+}
+
+
+.section{
+	overflow: auto;
+	position: absolute;
+	top: 50px;
+	background: white;
+	overflow: auto;
+	bottom: 37px;
+}
+.playlists-list{
+	border-right: 1px solid #e0e0e0;
+	width: 150px;
+	overflow-y: auto;
+}
+
+.playlists-list ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0;
+}
+
+.playlists-list ul li{
+    padding: 5px 10px;
+	cursor: pointer;
+}
+.playlists-list ul li.selected{
+	background: #deeeff;
+}
+
+.music-list{
+	overflow-y: auto;
+	flex: 1;
+}

@@ -1,0 +1,9 @@
+{
+	"name": "HtmlMusic",
+	"window": {
+		"width": 1080,
+		"height": 700,
+		"icon": "icon.png"
+	},
+	"main": "index.html"
+}

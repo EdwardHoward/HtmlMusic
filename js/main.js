@@ -1,3 +1,5 @@
+(function(){
+
 var	gui = require('nw.gui');
 
 angular.module('config', [])
@@ -108,10 +110,11 @@ htmlMusic.directive('ngContextMenu', function(){
 				// TODO: This can't be a prompt because it makes music skip,
 				// 		 Create custom dialog box
 				var name = prompt("Playlist Name") || "New Playlist";
-				Playlists.insert(name || 'New Playlist').then(function(){
-					Events.trigger('newPlaylist');
-				})
-
+                if(name){
+        			Playlists.insert(name || 'New Playlist').then(function(){
+        				Events.trigger('newPlaylist');
+        			})
+                }
 			}
 		}));
 
@@ -121,54 +124,7 @@ htmlMusic.directive('ngContextMenu', function(){
 	}],
 	templateUrl: '../templates/musicplayer.html'
 })
-.component('toolbar', {
-	controller: ['Events', 'Player', function(Events, Player){
-		var _this = this;
-
-		_this.isPlaying = Player.isPlaying;
-		_this.volume = 100;
-
-		_this.$onInit = function(){
-			Player.setVolume(_this.volume);
-
-			Events.on('songStart', function(){
-				_this.max = Player.getDuration();
-				timebar.value = 0;
-			});
-
-			// TODO: start the interval somewhere else (like in the Player)
-			Events.on('play', function(){
-				Player.startInterval();
-			});
-
-			Events.on('tick', function(){
-				timebar.value = Player.getCurrentTime();
-			});
-		}
-
-		// Toolbar buttons
-		_this.toggle = function(){
-			Events.trigger('toggle');
-		}
-		_this.prevSong = function(){
-			Events.trigger('prev');
-		}
-		_this.nextSong = function(){
-			Events.trigger('next');
-		}
-
-
-		_this.seek = function(){
-			Player.setTime(timebar.value);
-		};
-
-		_this.setVolume = function(){
-			Player.setVolume(_this.volume);
-		}
-	}],
-	templateUrl: '../templates/toolbar.html'
-
-}).component('time', {
+.component('time', {
 	bindings:{
 		update: '='
 	},
@@ -198,93 +154,6 @@ htmlMusic.directive('ngContextMenu', function(){
 	}],
 	template: '<div class="time"><span id="currentTime">{{$ctrl.currentTime}}</span>/<span id="durationTime">{{$ctrl.durationTime}}</span></div>'
 })
-.component('playlists', {
-	controller: ['Playlists', 'Events', function(Playlists, Events){
-		var _this = this;
-		_this.$onInit = function(){
-			Playlists.all().then(function(res){
-				_this.playlists = res;
-			});
-
-			Events.on('newPlaylist', function(playlist){
-				Playlists.all().then(function(res){
-					_this.playlists = res;
-				});
-			});
-		}
-
-		_this.getSongs = function(playlist){
-			_this.selectedPlaylist = playlist;
-			Events.trigger('playlistChange', playlist);
-		}
-	}],
-	templateUrl: '../templates/playlists.html'
-})
-.component('songs', {
-	controller: ['Songs', 'Events', 'Player', function(Songs, Events, Player){
-		var _this = this;
-		_this.selectedPlaylist;
-
-		_this.$onInit = function(){
-			Songs.all().then(function(res){
-				_this.songs = res;
-			});
-
-			Events.on('playlistChange', function(playlist){
-				_this.selectedPlaylist = playlist;
-				Songs.findByPlaylistId(playlist._id).then(function(res){
-					_this.songs = res;
-				});
-			});
-
-			Events.on('stop', function(){
-				_this.currentlyPlaying = null;
-			});
-
-			Events.on('toggle', function(){
-				if(_this.currentlyPlaying){
-					Player.toggle();
-				}else{
-					_this.playSong(_this.selected);
-				}
-			})
-
-			Events.on('next', function(){
-				playDir('next');
-			});
-
-			Events.on('prev', function(){
-				playDir('prev');
-			});
-
-			Events.on('songEnd', function(){
-				playDir('next');
-			});
-		}
-
-		_this.select = function(elem){
-			_this.selected = elem;
-		}
-
-		_this.playSong = function(elem){
-			// Doing this promise because I only want to pass a file path
-			// into the player
-			Player.play(elem.song.path).then(function(){
-				_this.currentlyPlaying = elem;
-			});
-		}
-
-		function playDir(dir){
-			var opts = (dir == 'next') ? ['$last','$$nextSibling'] : ['$first','$$prevSibling']
-			if(!_this.currentlyPlaying[opts[0]]){
-				_this.playSong(_this.currentlyPlaying[opts[1]]);
-			}else{
-				Player.stop();
-			}
-		}
-	}],
-	templateUrl: '../templates/songs.html'
-});
 
 htmlMusic.factory('Events', [function(){
 	var listeners = {};
@@ -349,48 +218,84 @@ htmlMusic.factory('Events', [function(){
 }])
 
 .factory('Playlists', ['DB', function(DB){
+    var _this = this;
 
-	this.all = function(){
+	_this.all = function(){
 		return DB.query('SELECT * FROM playlists')
 		.then(function(res){
 			return DB.fetchAll(res);
 		});
 	}
 
-	this.insert = function(name){
+	_this.insert = function(name){
 		return DB.query('INSERT INTO playlists (name) VALUES (?)', [name])
 		.then(function(res){
 			return DB.fetchAll(res);
 		});
 	}
 
-	return this;
+	return _this;
 }])
 
 .factory('Songs', ['DB', function(DB){
+    var _this = this;
 
-	this.all = function(){
+	_this.all = function(){
 		return DB.query('SELECT * FROM songs ORDER BY album, ABS(tracknumber)')
 		.then(function(res){
 			return DB.fetchAll(res);
 		});
 	}
 
-	this.findByPlaylistId = function(playlistId){
+	_this.findByPlaylistId = function(playlistId){
 		return DB.query('SELECT * FROM songs WHERE playlist_id=? ORDER BY album, ABS(tracknumber)', [playlistId+''])
 		.then(function(res){
 			return DB.fetchAll(res);
 		})
 	}
 
-	this.insert = function(data){
+	_this.insert = function(data){
 		return DB.query('INSERT INTO songs (playlist_id, path, title, tracknumber, artist, album) VALUES (?, ?, ?, ?, ?, ?)',
 		[data.playlistId, data.path, data.title, data.tracknumber, data.artist, data.album]).then(function(res){
 			return DB.fetchAll(res);
 		});
 	}
 
-	return this;
+	return _this;
+}])
+
+.factory('Cookies', [function(){
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+    return {
+        getCookie: function(name){
+            return getCookie(name);
+        },
+        setCookie: function(name, value){
+            setCookie(name, value, 20*365);
+        }
+    }
 }])
 
 .factory('Player', ['$q', 'Events', '$interval', function($q, Events, $interval){
@@ -399,7 +304,7 @@ htmlMusic.factory('Events', [function(){
 		volume,
 		playing = false;
 
-	function play(file, onSongEnd){
+	function playFile(file, onSongEnd){
 		var defer = $q.defer();
 
 		var request = new XMLHttpRequest();
@@ -408,10 +313,10 @@ htmlMusic.factory('Events', [function(){
 
 		request.onload = function(){
 			if(player) player.stop();
+            player =
 			player = AV.Player.fromBuffer(request.response);
 
 			player.on('ready', function(){
-				console.log(player);
 				player.volume = volume;
 
 				Events.trigger('songStart');
@@ -455,6 +360,7 @@ htmlMusic.factory('Events', [function(){
 	}
 
 	function startInterval(){
+        $interval.cancel(timeInterval);
 		timeInterval = $interval(function(){
 			if(!playing){
 				$interval.cancel(timeInterval);
@@ -465,9 +371,9 @@ htmlMusic.factory('Events', [function(){
 	}
 
 	return {
-		play: function(file){
+		playFile: function(file){
 			playing = true;
-			return play(file);
+			return playFile(file);
 		},
 		stop: function(){
 			if(player){
@@ -476,6 +382,24 @@ htmlMusic.factory('Events', [function(){
 				Events.trigger('stop');
 			}
 		},
+        play: function(){
+            if(player){
+                if(!player.playing){
+                    player.togglePlayback();
+                    playing = true;
+                    Events.trigger('play');
+                }
+            }
+        },
+        pause: function(){
+            if(player){
+                if(player.playing){
+                    player.togglePlayback();
+                    playing = false;
+                    Events.trigger('pause');
+                }
+            }
+        },
 		toggle: function(){
 			if(player){
 				player.togglePlayback();
@@ -491,11 +415,7 @@ htmlMusic.factory('Events', [function(){
 		},
 		setTime: function(time){
 			if(time < player.duration){
-				//try{
-					player.seek(time);
-				// }catch(e){
-				//
-				// }
+				player.seek(time);
 			}
 		},
 		isPlaying: function(){
@@ -520,3 +440,5 @@ htmlMusic.factory('Events', [function(){
 		}
 	}
 }]);
+
+})();

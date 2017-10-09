@@ -1,3 +1,3 @@
 <ul>
-	<li ng-repeat="playlist in $ctrl.playlists" ng-click="$ctrl.getSongs(playlist)" ng-class="{'selected': $ctrl.selectedPlaylist == playlist}">{{playlist.name}}</li>
+	<li ng-repeat="playlist in $ctrl.playlists" ng-click="$ctrl.getSongs(playlist._id)" ng-class="{'selected': $ctrl.selectedPlaylist == playlist._id}">{{playlist.name}}</li>
 </ul>

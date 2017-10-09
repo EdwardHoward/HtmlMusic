@@ -4,10 +4,12 @@
 		<meta charset="utf-8">
 		<title></title>
 		<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="/css/powerhour.css" type="text/css" />
 	</head>
 	<body>
+        <audio id="test"></audio>
 		<MusicPlayer></MusicPlayer>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 		<script type="text/javascript" src="/js/aurora/aurora.js"></script>
@@ -16,5 +18,15 @@
 		<script type="text/javascript" src="/js/aurora/ogg.js"></script>
 		<script type="text/javascript" src="/js/aurora/vorbis.js"></script>
 		<script src="/js/main.js"></script>
+        <script src="/js/services/queues.service.js"></script>
+        <script src="/js/services/songqueue.service.js"></script>
+        <script src="/js/components/search.component.js"></script>
+        <script src="/js/components/queuecontrol.component.js"></script>
+        <script src="/js/components/songlist.component.js"></script>
+        <script src="/js/components/playlist.component.js"></script>
+        <script src="/js/components/timebar.component.js"></script>
+        <script src="/js/components/volume.component.js"></script>
+        <script src="/js/components/controls.component.js"></script>
+        <script src="/extensions/powerhour/powerhour.component.js"></script>
 	</body>
 </html>

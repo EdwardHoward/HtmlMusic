@@ -1,0 +1,7 @@
+.ph-count{
+    margin-right: 5px;
+}
+
+#powerhour.playing{
+    box-shadow: inset 1px 1px 4px #e0e0e0;
+}

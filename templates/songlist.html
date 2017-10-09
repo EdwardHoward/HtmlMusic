@@ -12,14 +12,14 @@
 	<tbody>
 		<tr ng-repeat="song in $ctrl.songs"
 			ng-click="$ctrl.select(this)"
-			ng-dblclick="$ctrl.playSong(this)"
-			ng-class="{'selected': $ctrl.selected == this, 'playing': $ctrl.currentlyPlaying.song._id == song._id}">
+			ng-dblclick="$ctrl.playSong(this.$index, true)"
+			ng-class="{'selected': $ctrl.selected == this, 'playing': $ctrl.currentlyPlaying._id == song._id}">
 			<td class="current"></td>
 			<td class="center">{{song.tracknumber}}</td>
 			<td>{{song.artist}}</td>
 			<td>{{song.title}}</td>
 			<td>{{song.album}}</td>
-			<td class="time-cell"><time ng-if="$ctrl.currentlyPlaying.song._id == song._id"></time></td>
+			<td class="time-cell"><time ng-if="$ctrl.currentlyPlaying._id == song._id"></time></td>
 		</tr>
 	</tbody>
 </table>

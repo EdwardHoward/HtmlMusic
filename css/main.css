@@ -1,3 +1,11 @@
+* {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  user-select: none;
+}
+
 *, *:after, *:before{
 	box-sizing: inherit;
 }
@@ -78,7 +86,8 @@ body, html{
 	line-height: 38px;
 	border-top: 1px solid #e0e0e0;
 	background: #f9f9f9;
-	padding: 10px;
+	padding-left: 10px;
+    padding-right: 3px;
 }
 #timebar {
     width: 100%;
@@ -102,7 +111,9 @@ body, html{
 #playlist-table th.center{
 	text-align: center;
 }
-
+#playlist-table tr{
+    transition: background .1s ease;
+}
 #playlist-table tr.selected{
 	background: #deeeff;
 }

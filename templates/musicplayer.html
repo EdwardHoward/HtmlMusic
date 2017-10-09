@@ -1,14 +1,36 @@
 <div class="fixed">
-	<toolbar></toolbar>
+    <div id="toolbar">
+    	<div class="toolbar-section left">
+            <controls></controls>
+    		<volume></volume>
+    	</div>
+        <div class="toolbar-section right">
+    		<queuecontrol></queuecontrol>
+    	</div>
+    	<div class="toolbar-section right">
+    		<time update="true"></time>
+    	</div>
+    	<div class="toolbar-section middle">
+            <timebar></timebar>
+    	</div>
+    </div>
 </div>
 <div id="playlist" class="section">
 	<div class="playlists-list" ng-context-menu="openPlaylistMenu">
 		<playlists></playlists>
 	</div>
 	<div class="music-list">
-		<songs></songs>
+		<songlist></songslist>
 	</div>
 </div>
 <div class="fixed input">
-	<div id="input-section"><input id="fileInput" type="file" multiple ng-file-change="addSongs"/></div>
+	<div class="left">
+        <input id="fileInput" type="file" multiple ng-file-change="addSongs"/>
+    </div>
+    <div class="right">
+        <powerhour></powerhour>
+    </div>
+    <div class="right">
+        <search></search>
+    </div>
 </div>

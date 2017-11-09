@@ -9,11 +9,11 @@
             _this.started = false;
             // set this in options
             var options = {
-                maxTime: 10,
+                maxTime: 60,
                 randomStart: true
             }
 
-            _this.currentTime = 10;
+            _this.currentTime = 60;
             _this.currentIndex = 1;
 
             _this.$onInit = function(){
@@ -48,7 +48,6 @@
             }
 
             _this.onDblClick = function(){
-                console.log("double click");
                 endGame();
             }
 
@@ -59,8 +58,6 @@
             }
 
             function pause(){
-                console.log("pause");
-                //Events.trigger('toggle');
                 Player.pause();
                 _this.running = false;
             }

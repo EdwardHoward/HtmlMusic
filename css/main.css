@@ -57,7 +57,9 @@ body, html{
 
 .right{
 	float: right;
+    margin-left: 5px;
 }
+
 
 .center{
 	text-align: center;

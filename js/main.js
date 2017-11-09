@@ -71,6 +71,7 @@ htmlMusic.directive('ngContextMenu', function(){
 			});
 
 			Events.on('playlistChange', function(playlist){
+                console.log(playlist);
 				currentPlaylist = playlist;
 			});
 		}
@@ -81,12 +82,14 @@ htmlMusic.directive('ngContextMenu', function(){
 			 	return;
 			}
 			let files = element[0].files;
+            console.log(currentPlaylist);
 			for(let i = 0; i < files.length; i++){
 				let file = files[i];
 				let asset = AV.Asset.fromFile(file);
 				asset.get('metadata', function(data){
 					var tracknumber = data.trackNumber == undefined ? data.tracknumber : data.trackNumber;
-					data.playlistId = currentPlaylist._id;
+                    console.log(currentPlaylist);
+					data.playlistId = currentPlaylist;
 					data.path = file.path;
 					data.tracknumber = tracknumber;
 					if(currentPlaylist != undefined){

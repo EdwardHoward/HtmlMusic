@@ -3,7 +3,7 @@
     .component('search', {
         controller: ['SongQueue', 'Events', '$timeout', function(SongQueue, Events, $timeout){
             var _this = this;
-            _this.search = "Hello";
+            _this.search = "";
 
             var timeout;
             _this.searchSubmit = function(){
